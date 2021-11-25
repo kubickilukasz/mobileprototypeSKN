@@ -20,12 +20,6 @@ public class PlayerMovement : MonoBehaviour{
     [SerializeField]
     LayerMask groundedLayerMask;
 
-    [SerializeField]
-    Camera mainCamera;
-
-    [SerializeField] [Range(0.002f, 0.5f)]
-    float areaClick = 0.4f;
-
     public bool CanMove { set; get; } = true;
     public bool IsGrounded { set; get; } = true;
 
@@ -73,33 +67,10 @@ public class PlayerMovement : MonoBehaviour{
 
     void GetInputs() {
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-
-        if (Input.touchCount > 0) {
-            foreach (Touch touch in Input.touches) {
-                Vector3 viewport = mainCamera.ScreenToViewportPoint(touch.position);
-
-                if (viewport.x < areaClick) {
-                    xDirection = -1f;
-                } else if (viewport.x > 1f - areaClick) {
-                    xDirection = 1f;
-                } else {
-                    wantJump = true;
-                }
-            }
-
-        } else {
-           xDirection  = 0f;
-        }
-
-#else
-
         xDirection = Input.GetAxisRaw("Horizontal");
         if (Input.GetButtonDown("Jump")) {
             wantJump = true;
         }
-
-#endif
 
     }
 }
